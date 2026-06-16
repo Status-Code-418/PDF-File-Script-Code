@@ -41,17 +41,25 @@
 - **기술 상세**: 어노테이션의 `/Subtype`과 `/Rect` 값을 비교하여 전체 화면 링크 여부를 판단합니다.
 - **용도**: 불필요하거나 악의적인 전체 화면 링크를 정리하여 PDF의 원래 기능을 복원합니다.
 
+### 8. PDF PowerShell 명령어 삽입 (`PDF Script Code(Windows Powershell Script Code).py`)
+이 스크립트는 PDF 파일이 열릴 때 특정 PowerShell 명령어를 실행하도록 PDF에 삽입합니다.
+- **기능**: PDF의 `OpenAction`에 `/Launch` 액션을 추가하여 PDF 오픈 시 지정된 PowerShell 명령어를 실행합니다.
+- **기술 상세**: `pdfrw` 라이브러리를 사용하여 `/Launch` 액션과 PowerShell 명령어를 정의하고, 이를 PDF의 루트(`Root.OpenAction`)에 할당합니다.
+- **주의**: 이 기능은 보안상의 이유로 Adobe Reader 9.2 이하 버전에서만 작동하며, 최신 버전의 PDF 뷰어에서는 실행이 제한됩니다.
+- **용도**: 특정 환경에서의 자동화된 작업 실행 또는 보안 취약점 테스트.
+
 
 ## 기술적 특징
 - **Library**: 기존 `PyPDF2`의 후속 버전인 `pypdf`를 사용하여 더 나은 성능과 최신 PDF 표준 호환성을 제공합니다.
+- **Multi-Library Support**: 액션 삽입의 특성에 따라 `pypdf`와 `pdfrw`를 선택적으로 활용합니다.
 - **Low-level Manipulation**: `writer._root_object.update`를 통해 PDF의 루트 사전(Root Dictionary)을 직접 제어하여 표준 라이브러리 함수 이상의 커스텀 액션을 구현합니다.
 
 ## 요구 사항
 
-스크립트를 실행하기 위해서는 Python 3.x 환경과 `pypdf` 라이브러리가 필요합니다.
+스크립트를 실행하기 위해서는 Python 3.x 환경과 `pypdf`, `pdfrw` 라이브러리가 필요합니다.
 
 ```bash
-pip install pypdf
+pip install pypdf pdfrw
 ```
 
 ## 사용 방법
@@ -72,7 +80,9 @@ pip install pypdf
    # 또는
    python "PDF Script Code(Transparent Screen Link Delete).py"
    # 또는
-   python "PDF Script Code(Transparent Screen Link Make).py"
+   python "PDF Script Code(Transparent Screen Link Make).py" 
+   # 또는
+   python "PDF Script Code(Windows Powershell Script Code).py"
    ```
 
 ## 주의 사항
